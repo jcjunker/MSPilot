@@ -12,6 +12,7 @@ add_executable(${CMAKE_PROJECT_NAME}.out
     src/startup_msp432p401r_gcc.c
     src/system_msp432p401r.c
     src/uart.c
+    src/debug.c
     FreeRTOS-Kernel/croutine.c
     FreeRTOS-Kernel/event_groups.c
     FreeRTOS-Kernel/list.c

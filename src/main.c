@@ -1,6 +1,7 @@
 #include <ti/devices/msp432p4xx/driverlib/driverlib.h>
 
 #include "FreeRTOS.h"
+#include "debug.h"
 #include "task.h"
 #include "uart.h"
 
@@ -31,6 +32,7 @@ static void ledTask(void *args) {
   for (;;) {
     // Toggle LED every second
     GPIO_toggleOutputOnPin(GPIO_PORT_P1, GPIO_PIN0);
+    debugPrintf("Test!\r\n");
     vTaskDelay(pdMS_TO_TICKS(1000));
   }
 }
