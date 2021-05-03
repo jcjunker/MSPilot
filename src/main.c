@@ -2,6 +2,7 @@
 
 #include "FreeRTOS.h"
 #include "task.h"
+#include "uart.h"
 
 static void ledTask(void *args);
 
@@ -12,6 +13,8 @@ int main(void) {
   // Use P1.0 for LED output
   GPIO_setAsOutputPin(GPIO_PORT_P1, GPIO_PIN0);
   GPIO_setOutputLowOnPin(GPIO_PORT_P1, GPIO_PIN0);
+
+  uartInit();
 
   xTaskCreate(ledTask, "ledTask", configMINIMAL_STACK_SIZE, NULL,
               tskIDLE_PRIORITY + 1, NULL);
