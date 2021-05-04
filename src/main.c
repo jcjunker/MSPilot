@@ -2,8 +2,11 @@
 
 #include "FreeRTOS.h"
 #include "debug.h"
+#include "queue.h"
 #include "task.h"
 #include "uart.h"
+
+static QueueHandle_t ibus_queue;
 
 static void ledTask(void *args);
 static void ibusTask(void *args);
@@ -17,6 +20,8 @@ int main(void) {
   GPIO_setOutputLowOnPin(GPIO_PORT_P1, GPIO_PIN0);
 
   uartInit();
+
+  ibus_queue = xQueueCreate(1, sizeof(uint16_t) * 4);
 
   xTaskCreate(ledTask, "ledTask", configMINIMAL_STACK_SIZE, NULL,
               tskIDLE_PRIORITY + 1, NULL);
@@ -54,6 +59,7 @@ static void ibusTask(void *args) {
       chans[1] = (uint16_t)(pkt[4] | pkt[5] << 8);
       chans[2] = (uint16_t)(pkt[6] | pkt[7] << 8);
       chans[3] = (uint16_t)(pkt[8] | pkt[9] << 8);
+      xQueueSend(ibus_queue, chans, 0);
 
       byte_ctr = 0;
     }
